@@ -1,0 +1,2 @@
+alias svn-stash="bash ~/tools/svn-stash.sh"
+alias svn-diff="bash ~/tools/svn-diff.sh"
