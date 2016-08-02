@@ -13,20 +13,21 @@ if [ $# -eq 0 ]; then
     FILES=`ls $STASH_DIR | grep diff`
     DIFFNAME="diff$STACK_SIZE"
     svn diff > $STASH_DIR/$DIFFNAME
-    svn revert -R .
+    if [ -s $STASH_DIR/$DIFFNAME ]; then
+        svn revert -R .
+    else
+        echo "no revert performed since the file ${STASH_DIR}/${DIFFNAME} has not been created properly"
+        exit -1;
+    fi
     exit 0
-fi
+else
+    LAST_DIFF=`ls -t ${STASH_DIR} | awk '{print $NF}' | head -1`
 
+    if [ $STACK_SIZE -eq 0 ]; then
+        echo "Cannot perform any operations. Stack is empty"
+        exit -1
+    fi
 
-LAST_DIFF=`ls -t ${STASH_DIR} | awk '{print $NF}' | head -1`
-echo $LAST_DIFF
-
-if [ $STACK_SIZE -eq 0 ]; then
-    echo "Cannot perform any operations. Stack is empty"
-    exit -1
-fi
-
-if [ $# -gt 0 ]; then
     if [ "$1" = "pop" ]; then
         apply_diff $LAST_DIFF
         rm $STASH_DIR/$LAST_DIFF
