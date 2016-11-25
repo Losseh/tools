@@ -1,0 +1,24 @@
+[user]
+	email = adrian.szymanski@nokia.com
+	name = Adrian Szymanski
+[credential]
+	helper = cache --timeout=36000
+[alias]
+	st = status
+	ci = commit
+	up = pull --rebase
+	co = checkout
+	cl = clean -fd
+	br = branch
+	pop = stash pop
+[push]
+	default = simple
+[rerere]
+	enabled = true
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[core]
+	editor = vim

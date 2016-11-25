@@ -1,0 +1,120 @@
+########################################################
+makra w vimie:
+
+record
+q<letter><command>q
+
+execute
+<number>@<letter>
+########################################################
+
+                         SVN
+
+########################################################
+
+% revert commit
+svn merge -c -[revisionToRevertNumber]
+svn ci -m "revert ..."
+
+% log
+svn log -l [numberOfRevisions]
+
+% update to specific revision
+svn up -r[numberOfRevisionToBeUpToDate]
+
+########################################################
+
+gdb binary -c coredump
+
+#########################################################
+
+% diffs partitioning
+
+filterdiff -i "*Controller." cellDelete.diff > newDiff.diff
+filterdiff -i "*Controller." cellDelete.diff | lsdiff
+
+#########################################################
+
+% libs for gdb locally
+
+sudo apt-get install multiarch-support
+sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
+sudo apt-get install lib32stdc++6
+
+#########################################################
+
+% sed basics
+
+cat PLIK | grep -v "Check" | grep "void.*)$" | sed 's/(.*)//g' % removes all (.*) patterns
+
+% awk
+
+cat PLIK | grep -v "Check" | grep "void.*)$" | sed 's/(.*)//g' | awk '{ print $2}' % prints only names of void functions without arguments
+
+#########################################################
+# git
+
+# remove the file from stage area (undo 'git add')
+git reset HEAD <file>
+
+# undo local commits qq(leaves the changes in stage)
+git commit
+git reset --soft [revision]
+
+# undo local commits permanently
+git commit
+git reset --hard [revision]
+
+# undo local changes permanently
+git reset --hard
+
+# dry-run for git merge
+git merge --no-commit --no-ff $BRANCH
+git push origin --delete pusch_integration
+git remote prune origin --dry-run
+
+#########################################################
+# check if antenna data is not entirely zeros
+xxd cell0ant0.bin | awk '{print $10}' | uniq
+
+#########################################################
+# who is using jabber port?
+sudo lsof -i :5222
+
+#########################################################
+REMOVE OLD KERNELS
+sed -ne '/^Package: \(.*\)/{s//\1/;h;};/^Installed-Size: \(.*\)/{s//\1/;G;s/\n/ /;p;}' /var/lib/dpkg/status | sort -rn
+dpkg -l linux-{image,headers}-"[0-9]*"
+sudo dpkg --purge
+sudo apt-get purge
+
+#########################################################
+find operations
+
+REMOVE nPrbs from HipTDs
+find -name "*HipTD*" | sort | xargs sed -i '/nPrbs/d'
+
+FIND ONLY DIRECTORIES IN MAXIMAL DEPTH OF 1
+find -maxdepth 1 -type d | grep prepare | xargs rm -rf
+
+********************************************************************************
+
+##
+copy all hiptds keeping structure with xargs
+find C_Test/PHY_UL_TestEnvironment/Robot/Vectors/ -name "*HipTD*" | sort | xargs cp -t ../trx_integration/ -v --parents
+
+## substitute multiline srs for null
+find -name "*Hip*PUSCH*" | grep TRX | xargs perl -0777 -pe 's/\"srs\":\s*\{.*?\}/\"srs\":\ null/igs' -i
+
+## show counters for all tests:
+find -name "*HipTD*" | sort | xargs grep violations -B 3 | sed '/interval/d' | sed '/value/d' | perl -pe 's/\{\s*//igs' | sed 's/:.*violations\"//g' | sed '/--/d' | sed 's/-\ *\"/\: \"/g' | sed 's/,//g' | sed 's/\..*.*HipTD\_//g' | sed 's/\.json//g' | sed 's/\"//g' | awk '$3 > 10 {print $1 $2 $3}'
+
+## add two compUsage and compUsageGrouped to pusch tests
+find -name "*HipTD*" | grep PUSCH | sed '/Coverage/d' | xargs perl -0777 -pe 's/\"numOfAllocPrbs\"/\"compUsage\":\ 0,\n\ \ \ \ \ \ \ \ \ \ \ \ "compUsageGrouped\":\ 0,\n\ \ \ \ \ \ \ \ \ \ \ \ "numOfAllocPrbs\"/igs' -i
+
+## add key: value after existing key
+find -name "*HipTD*" | grep PUSCH | xargs perl -0777 -pe 's/(\s*)(\"demRefSigCs\".*?)\n/\1\2\1\"key\":\ 1234,\n/igs' | grep settings -A 4
+
+## add key: value before existing key
+find -name "*HipTD*" | xargs perl -0777 -pe 's/(\s*)(\"superCell\".*?)\n/\1\"narrowband\":\ None,\1\2\n/igs' | grep superCell -A 2 -B 2
+

@@ -1,0 +1,60 @@
+function source_packet {
+    PACKET=$1
+    DIR_BASE=/opt/$PACKET/x86_64/
+    source `find $DIR_BASE -name "*$PACKET*env" | grep "$PACKET[0-9\.-]*\.env" | sort | tail -n 1`
+}
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+
+unset SVN_VERSION
+HSTNM=`hostname | sed "s|[0-9]*.emea.nsn-net.net$||g"`
+
+source_packet wiggle
+source_packet ag
+source_packet subversion
+source_packet git
+
+echo $HSTNM
+if [ $HSTNM == "something" ]
+then
+    echo "Espoo Env Settings"
+    export PYTHONPATH=/opt/python/x86_64/2.7.4/
+    export PYTHON_HOME=/opt/python/x86_64/2.7.4/
+    export PYTHON_VERSION=python_2.7.4
+    export PYTHON_PATH=$PYTHONPATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/python/x86_64/2.7.4/lib
+fi
+
+if [ $HSTNM == "something_else" ]
+then
+    if [ "$LINSEE_VERSION" == "" ]
+    then
+        echo "Wroclaw Env Settings"
+        HSTNM_NUM=`hostname | sed 's/^[^0-9]*//g' | sed 's/[^0-9]*$//g'`
+        if [ $HSTNM_NUM == "39" ]
+        then
+            setsee LINSEE_PYTHON_2.7P13
+        fi
+        if [ $HSTNM_NUM == "40" ]
+        then
+            setsee LINSEE_PYTHON_2.7p15
+        fi
+    
+        if [ $HSTNM_NUM == "41" ]
+        then
+            setsee LINSEE_PYTHON_2.7P13
+        fi
+    fi
+fi
+
+echo "Environment setup complete"
+svn --version
