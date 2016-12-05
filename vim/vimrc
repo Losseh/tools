@@ -2,7 +2,7 @@
 syntax on
 
 " Set the color scheme
-colorscheme myscheme
+colorscheme koehler
 
 " Run in gui mode
 if has("gui_running")
