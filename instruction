@@ -118,3 +118,5 @@ find -name "*HipTD*" | grep PUSCH | xargs perl -0777 -pe 's/(\s*)(\"demRefSigCs\
 ## add key: value before existing key
 find -name "*HipTD*" | xargs perl -0777 -pe 's/(\s*)(\"superCell\".*?)\n/\1\"narrowband\":\ None,\1\2\n/igs' | grep superCell -A 2 -B 2
 
+## SWL svn qx mapping
+svn log -l1000 | perl -i -pe 'BEGIN{undef $/;} s/line[s]*\s*\[/\[/sg' | grep 2017 | sed -e 's/.*\([qQ][a-zA-Z0-9]\{6\}\).*\(\[[A-Z]\{3\}\]\).*/\1 \2/g' | sed '/2017/d' | sort | uniq

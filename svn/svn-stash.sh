@@ -1,6 +1,8 @@
-#!/bin/bash -xe
+#!/bin/bash
 
 function apply_diff {
+    cat $STASH_DIR/$1 | grep "revision 0" | sed 's/---\ //g' | sed 's/\.java.*/.java/g' | xargs touch
+    cat $STASH_DIR/$1 | grep "revision 0" | sed 's/---\ //g' | sed 's/\.java.*/.java/g' | xargs svn add
     svn patch $STASH_DIR/$1
 }
 
@@ -11,7 +13,8 @@ STACK_SIZE=`ls $STASH_DIR | wc -w`
 if [ $# -eq 0 ]; then
     mkdir -p $STASH_DIR
     FILES=`ls $STASH_DIR | grep diff`
-    DIFFNAME="diff$STACK_SIZE"
+    DIFFNAME="diff${STACK_SIZE}"
+    echo $DIFFNAME
     svn diff > $STASH_DIR/$DIFFNAME
     if [ -s $STASH_DIR/$DIFFNAME ]; then
         svn revert -R .
