@@ -22,6 +22,15 @@ svn log -l [numberOfRevisions]
 % update to specific revision
 svn up -r[numberOfRevisionToBeUpToDate]
 
+# changelists
+
+http://svnbook.red-bean.com/en/1.7/svn.advanced.changelists.html
+
+svn changelist CHANGELIST_NAME FILE1 FILE2 ...
+svn diff --changelist CHANGELIST_NAME
+svn commit --changelist CHANGELIST_NAME -m "comment"
+svn changelist --remove FILE1
+
 ########################################################
 
 gdb binary -c coredump
@@ -120,3 +129,5 @@ find -name "*HipTD*" | xargs perl -0777 -pe 's/(\s*)(\"superCell\".*?)\n/\1\"nar
 
 ## SWL svn qx mapping
 svn log -l1000 | perl -i -pe 'BEGIN{undef $/;} s/line[s]*\s*\[/\[/sg' | grep 2017 | sed -e 's/.*\([qQ][a-zA-Z0-9]\{6\}\).*\(\[[A-Z]\{3\}\]\).*/\1 \2/g' | sed '/2017/d' | sort | uniq
+
+## SVN change
