@@ -1,0 +1,21 @@
+TODO
+
+** make order within Pobrane/youtube dir
+
+** download whole playlist from youtube
+youtube-dl --extract-audio --audio-format mp3 --yes-playlist -i --playlist-start [NUMBER] [LINK]
+youtube-dl --extract-audio --audio-format mp3 --yes-playlist -i [LINK]
+
+** rename program to rename multiple files within one directory
+rename 's/regex/substituted/g' [FILES e.g. *.mp3]
+
+
+** removal of all youtube-dl downloaded endings of 11 random signs
+rename.sh 's/-[a-zA-Z0-9]\{11\}//g'
+
+
+
+******
+super packest one must have on computer
+
+youtube-dl
