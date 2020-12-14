@@ -4,11 +4,9 @@ import hashlib, os, sys
 
 def hash(directory):
   for files in os.listdir(directory):
-    print(files)
     for subfile in files:
-      print(subfile)
-      if not subfile.startswith('.'):
-        full_dir_path = os.path.join(directory, subfile)
+      full_dir_path = os.path.join(directory, subfile)
+      if os.path.isdir(full_dir_path):
         dir_files = os.listdir(full_dir_path)
         dir_files_names = ''.join(dir_files)
         files_names_hash = hashlib.md5(dir_files_names.encode('utf-8')).hexdigest()
