@@ -3,8 +3,8 @@
 import hashlib, os, sys
 
 def hash(directory):
-  for subfile in os.listdir(directory):
-    full_dir_path = os.path.join(directory, subfile)
+  for subdir in os.listdir(directory):
+    full_dir_path = os.path.join(directory, subdir)
     if os.path.isdir(full_dir_path):
       dir_files = os.listdir(full_dir_path)
       dir_files_names = ''.join(dir_files)
