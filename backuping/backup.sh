@@ -9,7 +9,7 @@ then
   echo "---desired file exists. zipping is omitted"
 else
   echo "---zipping files to backups/$OUTPUT"
-  zip -r backups/$OUTPUT cv_justyna dokumenty felka finanse hasla mieszkanie pity ubezpieczenia zlobki backup.sh oneliners.txt
+  zip -r backups/$OUTPUT cv_justyna dokumenty felka finanse hasla mieszkanie pity ubezpieczenia zdrowie zlobki backup.sh oneliners.txt
 fi
 
 if [ -d $BACKUP_DISC ]
